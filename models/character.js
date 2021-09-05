@@ -5,21 +5,26 @@ const CharacterSchema=Schema({
         type:String,
         required:true
     },
-    img:{
-        type:String,
-        required:true
+    image:{
+        type:String
     },
     age:{
-        type:Integer,
+        type:Number,
         required:true
     },
-    height:{
-        type:Double,
+    weight:{
+        type:Number,
         required:true
     },
     story:{
         type:String
-    }
+    },
+    movies:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:'Movie'
+        }
+    ]
 })
 
 module.exports=model('Character',CharacterSchema)
