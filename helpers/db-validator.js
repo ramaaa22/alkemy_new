@@ -1,7 +1,9 @@
 const Character = require('../models/character'); 
 const Genre = require('../models/genre');
-const GenreSql = require('../models/genre_sql');
-const MovieSql = require('../models/movie_sql')
+const Movie = require('../models/movie');
+const User = require('../models/user');
+
+
 
 
 const existsCharacterWithName =  async (name='')=>{
@@ -11,19 +13,8 @@ const existsCharacterWithName =  async (name='')=>{
     }
 }
 
-/*const existsGenreWithName =  async (name='')=>{
-    const exists = await Genre.findOne({name});
-    if (exists) {
-        throw new Error('El género ya existe en la BD')
-    }
-}*/
-
 const existsGenreWithName =  async (name='')=>{
-    const exists = await GenreSql.findOne({
-        where:{
-            name:name
-        }
-    })
+    const exists = await Genre.findOne({name});
     if (exists) {
         throw new Error('El género ya existe en la BD')
     }
@@ -39,13 +30,16 @@ const existsCharacterWithId =  async (id)=>{
 }
 
 const existsMovieWithName =  async (name='')=>{
-    const exists = await MovieSql.findOne({
-        where:{
-            name
-        }
-    })
+    const exists = await Movie.findOne({name})
     if (exists) {
         throw new Error('La pelicula ya existe en la BD')
+    }
+}
+
+const existsUserWithMail =  async (mail='')=>{
+    const exists = await User.findOne({mail})
+    if (exists) {
+        throw new Error('El usuario ya existe en la BD')
     }
 }
 
@@ -53,5 +47,6 @@ module.exports={
     existsCharacterWithName,
     existsCharacterWithId,
     existsGenreWithName,
-    existsMovieWithName
+    existsMovieWithName,
+    existsUserWithMail
 }

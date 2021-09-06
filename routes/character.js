@@ -8,13 +8,16 @@ const {getCharacters,
     updateCharacter}= require('../controllers/characters');
 const { existsCharacterWithName, existsCharacterWithId } = require('../helpers/db-validator');
 const validateFields = require('../middlewares/validate-fields');
-
+const validateJwt = require('../middlewares/validate-jwt')
 
 const router = Router();
 
-router.get('/', getCharacters);
+router.get('/',[
+    validateJwt,
+], getCharacters);
 
 router.get('/:id',[
+    validateJwt,
     check('id','No es un id válido de Mongo').isMongoId(),
     check('id').custom(existsCharacterWithId),
     validateFields
@@ -23,6 +26,7 @@ router.get('/:id',[
 
 
 router.post('/',[
+    validateJwt,
     check('name','El nombre es obligatorio').not().isEmpty(),
     check('image','La imagen es obligatorio').not().isEmpty(),
     check('age','La edad es obligatorio').not().isEmpty(),
@@ -32,11 +36,13 @@ router.post('/',[
     ]  
     ,postCharacter,)
 
-router.delete('/',deleteCharacter)
+router.delete('/:id',[
+    validateJwt,
+],deleteCharacter)
 
-router.patch('/',patchCharacter)
 
 router.put('/:id',[
+    validateJwt,
     check('name').custom(existsCharacterWithName),
     validateFields
 ],updateCharacter)

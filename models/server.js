@@ -3,20 +3,23 @@ const cors =require('cors');
 const character_routes = require('../routes/character');
 const genre_routes = require('../routes/genre');
 const movie_routes = require('../routes/movie');
+const user_routes = require('../routes/user');
+
 const { dbConnection } = require('../database/config');
-const db = require('../database/connection');
+//const db = require('../database/connection');
 
 
 class Server{
     constructor(){
         this.app=express();
         this.port=process.env.PORT;
-        this.character_path='/api/characters';
-        this.genre_path='/api/genres'
-        this.movie_path='/api/movies'
+        this.character_path='/characters';
+        this.genre_path='/genres'
+        this.movie_path='/movies'
+        this.user_path='/auth'
         //Conexion con bd
-        //this.connectDb();
-        this.connectDbSql();
+        this.connectDb();
+        //this.connectDbSql();
         //Uso de middlewares
         this.middlewares();
         //Rutas
@@ -49,6 +52,7 @@ class Server{
         this.app.use(this.character_path, character_routes);
         this.app.use(this.genre_path,genre_routes);
         this.app.use(this.movie_path,movie_routes);
+        this.app.use(this.user_path,user_routes);
     }
     listen(){
         this.app.listen(this.port,()=>{
